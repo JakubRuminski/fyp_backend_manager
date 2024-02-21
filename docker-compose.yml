@@ -1,0 +1,39 @@
+version: '3.8'
+services:
+  server:
+    build:
+      context: ./
+      target: DEV
+      dockerfile: Dockerfile.dev
+    ports:
+      - 9999:9999
+    volumes:
+      - ./backend:/backend
+    env_file:
+      - ./secrets/env/.env
+    environment:
+      - ENVIRONMENT=DEV
+    restart: unless-stopped
+
+  DEV-postgres:
+    image: postgres:13
+    ports:
+      - 5432:5432
+    volumes:
+      - ./database_storage/db:/var/lib/postgresql/data
+    env_file:
+      - ./secrets/env/.env
+    restart: unless-stopped
+
+  unit_tests:
+    build:
+      context: ./
+      target: UNIT_TEST
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./backend:/backend
+    env_file:
+      - ./secrets/env/.env
+    environment:
+      - ENVIRONMENT=UNIT_TEST
+    restart: unless-stopped

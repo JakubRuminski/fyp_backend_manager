@@ -1,0 +1,42 @@
+FROM golang:1.22.0 AS DEV
+
+COPY ./backend /backend
+
+WORKDIR /backend
+ENV GO111MODULE=on
+
+RUN go install -mod=mod github.com/githubnemo/CompileDaemon
+
+ENTRYPOINT /go/bin/CompileDaemon -build="go build -o /cobh ."\
+                                 -command="/cobh prepare"\
+                                 -pattern="backend/build/+\.*"\
+                                 -include="*.js"\
+                                 -include="*.jsx"\
+                                 -include="*.css"\
+                                 -include="*.html"\
+                                 -include="*.png"\
+                                 -include="*.json"\
+                                 -include="*.go"\
+                                 -include="*.c"
+
+
+FROM golang:1.22.0 AS UNIT_TEST
+
+COPY ./backend /backend
+
+WORKDIR /backend
+ENV GO111MODULE=on
+
+RUN go install -mod=mod github.com/githubnemo/CompileDaemon
+
+ENTRYPOINT /go/bin/CompileDaemon -build="go build -o /cobh ."\
+                                 -command="go test -v -count=1 -cover -race ./..."\
+                                 -pattern="backend/build/+\.*"\
+                                 -include="*.js"\
+                                 -include="*.jsx"\
+                                 -include="*.css"\
+                                 -include="*.html"\
+                                 -include="*.png"\
+                                 -include="*.json"\
+                                 -include="*.go"\
+                                 -include="*.c"
