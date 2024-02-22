@@ -4,4 +4,5 @@ backend
 database_storage
 frontend
 secrets
+logs
 

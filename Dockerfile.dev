@@ -9,6 +9,8 @@ WORKDIR /backend
 #     apt-get install -y chromium || \
 #     apt-get install -y chromium
 
+RUN mkdir /logs
+
 RUN go install -mod=mod github.com/githubnemo/CompileDaemon
 
 ENTRYPOINT /go/bin/CompileDaemon -build="go build -o /cobh ."\
@@ -30,6 +32,8 @@ COPY ./backend /backend
 
 WORKDIR /backend
 ENV GO111MODULE=on
+
+RUN mkdir logs
 
 RUN go install -mod=mod github.com/githubnemo/CompileDaemon
 
