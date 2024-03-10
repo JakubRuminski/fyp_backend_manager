@@ -1,8 +1,8 @@
 .DS_Store
 
-backend
+./backend
 database_storage
-frontend
+./frontend
 secrets
 logs
 
