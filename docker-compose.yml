@@ -33,8 +33,9 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - ./backend:/backend
+      - ./logs:/logs
     env_file:
       - ./secrets/env/.env
     environment:
-      - ENVIRONMENT=UNIT_TEST
+      - ENVIRONMENT=PRODUCTION
     restart: unless-stopped
